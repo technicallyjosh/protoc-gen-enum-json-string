@@ -9,7 +9,7 @@ import (
 
 var flags flag.FlagSet
 
-var version string
+var version = "dev"
 
 func main() {
 	opts := protogen.Options{
