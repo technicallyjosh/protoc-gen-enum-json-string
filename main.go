@@ -9,18 +9,12 @@ import (
 
 var flags flag.FlagSet
 
-var version = "dev"
-
 func main() {
 	opts := protogen.Options{
 		ParamFunc: flags.Set,
 	}
 
-	conf := generator.Config{
-		Version: version,
-	}
-
 	opts.Run(func(plugin *protogen.Plugin) error {
-		return generator.New(plugin, conf).Run()
+		return generator.New(plugin).Run()
 	})
 }
