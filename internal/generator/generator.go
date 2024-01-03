@@ -54,9 +54,7 @@ func (g *Generator) Run() error {
 			continue
 		}
 
-		if len(file.Enums) == 0 {
-			continue
-		}
+		totalLen := len(file.Enums)
 
 		prefix := file.GeneratedFilenamePrefix
 
@@ -78,6 +76,8 @@ func (g *Generator) Run() error {
 		// All other enums under messages.
 		enums := getEnums(file.Messages)
 
+		totalLen += len(enums)
+
 		for _, enum := range enums {
 			_, err := fileBuffer.WriteString(fmt.Sprintf(implementations, enum.GoIdent.GoName))
 			if err != nil {
@@ -86,6 +86,11 @@ func (g *Generator) Run() error {
 		}
 
 		outFile := g.plugin.NewGeneratedFile(prefix+".enum_json_string.go", file.GoImportPath)
+
+		if totalLen == 0 {
+			// Don't write our file if we don't have any enums.
+			continue
+		}
 
 		_, err = outFile.Write(fileBuffer.Bytes())
 		return err
