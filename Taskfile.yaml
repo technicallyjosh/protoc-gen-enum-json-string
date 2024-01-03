@@ -1,0 +1,36 @@
+version: 3
+
+vars:
+  wd: /workspace
+
+tasks:
+  default:
+    cmds:
+      - task: lint
+      - task: test
+
+  buf-image:
+    summary: Builds an image locally for running Buf.
+    cmds:
+      - docker build -f buf.Dockerfile -t localbuf:latest .
+
+  lint:
+    summary: Lints Protobuf and Go.
+    deps:
+      - task: buf-image
+    cmds:
+      - docker run --rm -v "$(pwd):{{.wd}}" -w {{.wd}} localbuf lint
+      - golangci-lint run ./...
+
+  test:
+    summary: Tests the lib end to end.
+    cmds:
+      - go install .
+      - go test -v ./...
+
+  generate:
+    summary: Generates Go from Protobuf.
+    deps:
+      - task: buf-image
+    cmds:
+      - docker run --rm -v "$(pwd):/{{.wd}}" -w {{.wd}} localbuf generate
