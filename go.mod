@@ -1,4 +1,4 @@
-module github.com/dotjoshrc/protoc-gen-enum-json-string
+module github.com/technicallyjosh/protoc-gen-enum-json-string
 
 go 1.24
 
