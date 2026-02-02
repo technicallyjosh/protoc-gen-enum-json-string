@@ -11,5 +11,5 @@ of the default integers when using JSON.
 ## Install
 
 ```
-go install github.com/dotjoshrc/protoc-gen-enum-json-string@latest
+go install github.com/technicallyjosh/protoc-gen-enum-json-string@latest
 ```
